@@ -35,4 +35,16 @@ export class ItemsWithSpells {
     loadTemplates(Object.values(flattenObject(this.TEMPLATES)));
   }
 
+  static getChildItemData = async ({uuid, changes}, parentItem) => {
+    const original = await fromUuid(uuid);
+
+    const fixedChanges = {
+      [`flags.${this.MODULE_ID}.${this.FLAGS.parentItem}`]: parentItem.uuid,
+      ['data.preparation.mode']: 'item',
+    }
+
+    const update = foundry.utils.mergeObject(changes, fixedChanges);
+
+    return foundry.utils.mergeObject(original.toJSON(), update);
+  }
 }

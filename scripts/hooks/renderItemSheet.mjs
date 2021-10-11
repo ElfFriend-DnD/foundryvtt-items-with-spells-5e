@@ -19,19 +19,12 @@ Hooks.on('renderItemSheet', async (app, html) => {
 });
 
 async function renderSpellsList(parentItem) {
-  const itemSpells = parentItem.getFlag(ItemsWithSpells.MODULE_ID, ItemsWithSpells.FLAGS.itemSpells);
+  const itemSpells = parentItem.getFlag(ItemsWithSpells.MODULE_ID, ItemsWithSpells.FLAGS.itemSpells) ?? [];
 
   const itemSpellItems = await Promise.all(
     itemSpells.map(async ({uuid, changes}) => {
-      const original = await fromUuid(uuid);
-
-      const fixedChanges = {
-        [`flags.${ItemsWithSpells.MODULE_ID}.${ItemsWithSpells.FLAGS.parentItem}`]: parentItem.uuid
-      }
-
-      const update = foundry.utils.mergeObject(changes, fixedChanges);
-
-      return Item.create(foundry.utils.mergeObject(original.toJSON(), update), {temporary: true});
+      const childItemData = await ItemsWithSpells.getChildItemData({uuid, changes}, parentItem);
+      return Item.create(childItemData, {temporary: true});
     })
   );
 

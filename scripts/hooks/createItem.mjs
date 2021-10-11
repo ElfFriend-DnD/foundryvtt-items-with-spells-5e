@@ -15,17 +15,7 @@ async function addChildSpellsToActor(itemCreated) {
   }
 
   const itemSpellData = await Promise.all(
-    itemSpells.map(async ({uuid, changes}) => {
-      const originalData = await fromUuid(uuid).toJSON();
-
-      const fixedChanges = {
-        [`flags.${ItemsWithSpells.MODULE_ID}.${ItemsWithSpells.FLAGS.parentItem}`]: itemCreated.uuid
-      }
-
-      const update = foundry.utils.mergeObject(changes, fixedChanges);
-
-      return foundry.utils.mergeObject(originalData, update);
-    })
+    itemSpells.map(({uuid, changes}) => ItemsWithSpells.getChildItemData({uuid, changes}, itemCreated))
   );
 
   return itemCreated.parent.createEmbeddedDocuments('Item', itemSpellData);
