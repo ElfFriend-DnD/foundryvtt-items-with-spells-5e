@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "name": "foundryvtt-devMode",
+  "version": "1.6.0",
+  "description": "A module with some tools to help enable Foundry VTT package developers.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/League-of-Foundry-Developers/foundryvtt-devMode"
+  },
+  "bugs": {
+    "url": "https://github.com/League-of-Foundry-Developers/foundryvtt-devMode/issues"
+  },
+  "scripts": {
+    "lint": "eslint --ext .js .",
+    "lint:fix": "eslint --ext .js --fix .",
+    "format": "prettier --write \"./**/*.(js|json|scss)\""
+  },
+  "devDependencies": {
+    "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "lint-staged": "^11.1.2",
+    "prettier": "^2.3.2"
+  },
+  "lint-staged": {
+    "*.(js)": "eslint --fix",
+    "*.(json|scss)": "prettier --write"
+  },
+  "dependencies": {}
+}

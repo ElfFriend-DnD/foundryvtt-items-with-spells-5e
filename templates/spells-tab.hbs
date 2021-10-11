@@ -1,0 +1,23 @@
+<div class="items-with-spells-tab">
+  <h3 class="form-header">Spells</h3>
+  <ol class="items-list">
+    <ol class="item-list">
+      {{#each itemSpells as |spell|}}
+
+      <li class="item context-enabled flexrow" data-item-id="{{spell.id}}">
+        <div class="item-name flexrow rollable">
+          <div class="item-image" style="background-image: url({{spell.img}})">{{{ @root/rollIcon }}}</div>
+          <h4>{{spell.name}}</h4>
+        </div>
+
+        {{#if @root/isOwner}}
+        <div class="item-controls context-menu">
+            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </div>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ol>
+  </ol>
+
+</div>

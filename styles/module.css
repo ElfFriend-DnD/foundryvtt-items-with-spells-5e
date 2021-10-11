@@ -1,0 +1,4 @@
+.items-with-spells-tab {
+  display: flex;
+  flex-direction: column;
+}

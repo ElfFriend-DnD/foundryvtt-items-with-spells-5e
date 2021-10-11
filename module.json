@@ -1,17 +1,19 @@
 {
-  "name": "foundryvtt-itemsWithSpells",
-  "title": "New Module",
+  "name": "items-with-spells-5e",
+  "title": "Items with Spells 5e",
   "description": "",
-  "version": "This is auto replaced",
-  "library": "false",
-  "manifestPlusVersion": "1.0.0",
-  "minimumCoreVersion": "0.8.8",
-  "compatibleCoreVersion": "0.8.8",
+  "version": "0.0.0",
+  "manifestPlusVersion": "1.1.0",
+  "minimumCoreVersion": "0.8.9",
+  "compatibleCoreVersion": "0.8.9",
+  "author": "Andrew Krigline (akrigline)",
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
-      "discord": "discordID#0001"
+      "name": "Andrew Krigline",
+      "discord": "Calego#0914",
+      "url": "https://github.com/ElfFriend-DnD",
+      "patreon": "https://www.patreon.com/ElfFriend_DnD",
+      "ko-fi": "https://ko-fi.com/elffriend"
     }
   ],
   "dependencies": [
@@ -21,10 +23,7 @@
 
   ],
   "esmodules": [
-    "/scripts/module.js"
-  ],
-  "scripts": [
-    "/scripts/lib/lib.js"
+    "/scripts/module.mjs"
   ],
   "styles": [
     "/styles/module.css"
@@ -36,7 +35,13 @@
       "path": "languages/en.json"
     }
   ],
-  "url": "This is auto replaced",
-  "manifest": "This is auto replaced",
-  "download": "This is auto replaced",
+  "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/issues",
+  "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/releases",
+  "download": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/releases/latest/download/module.zip",
+  "manifest": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/releases/latest/download/module.json",
+  "readme": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/main/README.md",
+  "url": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells",
+  "flags": {
+    "allowBugReporter": true
+  }
 }
