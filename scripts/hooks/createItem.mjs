@@ -1,4 +1,4 @@
-import { ItemsWithSpells } from "../classes/ItemsWithSpells.mjs";
+import { ItemsWithSpells } from '../classes/ItemsWithSpells.mjs';
 
 /**
  * Add spells from flags to the parent actor.
@@ -15,7 +15,7 @@ async function addChildSpellsToActor(itemCreated) {
   }
 
   const itemSpellData = await Promise.all(
-    itemSpells.map(({uuid, changes}) => ItemsWithSpells.getChildItemData({uuid, changes}, itemCreated))
+    itemSpells.map(({ uuid, changes }) => ItemsWithSpells.getChildItemData({ uuid, changes }, itemCreated)),
   );
 
   return itemCreated.parent.createEmbeddedDocuments('Item', itemSpellData);

@@ -1,16 +1,14 @@
 export class ItemsWithSpells {
-  static API = {
-  };
+  static API = {};
 
   static MODULE_ID = 'items-with-spells-5e';
 
-  static SETTINGS = {
-  };
+  static SETTINGS = {};
 
   static FLAGS = {
     itemSpells: 'item-spells',
-    parentItem: 'parent-item'
-  }
+    parentItem: 'parent-item',
+  };
 
   static TEMPLATES = {
     spellsTab: `modules/${this.MODULE_ID}/templates/spells-tab.hbs`,
@@ -33,18 +31,5 @@ export class ItemsWithSpells {
 
   static preloadTemplates() {
     loadTemplates(Object.values(flattenObject(this.TEMPLATES)));
-  }
-
-  static getChildItemData = async ({uuid, changes}, parentItem) => {
-    const original = await fromUuid(uuid);
-
-    const fixedChanges = {
-      [`flags.${this.MODULE_ID}.${this.FLAGS.parentItem}`]: parentItem.uuid,
-      ['data.preparation.mode']: 'item',
-    }
-
-    const update = foundry.utils.mergeObject(changes, fixedChanges);
-
-    return foundry.utils.mergeObject(original.toJSON(), update);
   }
 }
