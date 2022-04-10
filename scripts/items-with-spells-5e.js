@@ -1,4 +1,9 @@
-export class ItemsWithSpells {
+//@ts-check
+import { ItemsWithSpells5eActorSheet } from './classes/actor-sheet.js';
+import { ItemsWithSpells5eActor } from './classes/actor.js';
+import { ItemsWithSpells5eItemSheet } from './classes/item-sheet.js';
+
+export class ItemsWithSpells5e {
   static API = {};
 
   static MODULE_ID = 'items-with-spells-5e';
@@ -8,6 +13,7 @@ export class ItemsWithSpells {
   static FLAGS = {
     itemSpells: 'item-spells',
     parentItem: 'parent-item',
+    // sourceUuid: 'source-uuid',
   };
 
   static TEMPLATES = {
@@ -33,3 +39,23 @@ export class ItemsWithSpells {
     loadTemplates(Object.values(flattenObject(this.TEMPLATES)));
   }
 }
+
+Hooks.once('devModeReady', ({ registerPackageDebugFlag }) => {
+  registerPackageDebugFlag(ItemsWithSpells5e.MODULE_ID);
+});
+
+Hooks.once('init', () => {
+  ItemsWithSpells5e.log(true, 'Initialized');
+
+  ItemsWithSpells5e.preloadTemplates();
+
+  CONFIG.DND5E.spellPreparationModes = {
+    ...CONFIG.DND5E.spellPreparationModes,
+    item: 'Item',
+  };
+
+  ItemsWithSpells5eActorSheet.init();
+});
+
+ItemsWithSpells5eItemSheet.init();
+ItemsWithSpells5eActor.init();
