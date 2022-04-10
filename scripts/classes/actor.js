@@ -14,22 +14,6 @@ export class ItemsWithSpells5eActor {
     Hooks.on('deleteItem', this.handleDeleteItem);
   }
 
-  static handleDeleteItem = async (itemDeleted, options, userId) => {
-    // do nothing if we are not the one creating the item
-    if (userId !== game.user.id) {
-      return;
-    }
-
-    // do nothing if the item was not created on an actor
-    if (!itemDeleted.parent || !(itemDeleted.parent instanceof Actor)) {
-      return;
-    }
-
-    ItemsWithSpells5e.log(false, 'handleDeleteItem', itemDeleted);
-
-    this.removeChildSpellsFromActor(itemDeleted);
-  };
-
   /**
    * Add the item created's attached items to the actor.
    * @param {Item5e} itemDeleted
@@ -62,6 +46,27 @@ export class ItemsWithSpells5eActor {
   };
 
   /**
+   * Remove spells from flags on the parent actor.
+   *
+   * @param {Item} itemDeleted - Item removed from an actor.
+   */
+  static handleDeleteItem = async (itemDeleted, options, userId) => {
+    // do nothing if we are not the one creating the item
+    if (userId !== game.user.id) {
+      return;
+    }
+
+    // do nothing if the item was not created on an actor
+    if (!itemDeleted.parent || !(itemDeleted.parent instanceof Actor)) {
+      return;
+    }
+
+    ItemsWithSpells5e.log(false, 'handleDeleteItem', itemDeleted);
+
+    this.removeChildSpellsFromActor(itemDeleted);
+  };
+
+  /**
    * Add the item created's attached items to the actor.
    * @param {Item5e} itemCreated
    */
@@ -87,8 +92,7 @@ export class ItemsWithSpells5eActor {
   /**
    * Add spells from flags to the parent actor.
    *
-   * @param itemCreated {Item} - Item on an actor.
-   * @returns
+   * @param {Item} itemCreated - Item on an actor.
    */
   static handleCreateItem = async (itemCreated, options, userId) => {
     // do nothing if we are not the one creating the item

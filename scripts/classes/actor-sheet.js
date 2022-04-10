@@ -26,7 +26,19 @@ export class ItemsWithSpells5eActorSheet {
 
   static prepareItemSpellbook(wrapped, data, spells) {
     ItemsWithSpells5e.log(false, 'preparing spells', { spells, data });
-    const nonItemSpells = spells.filter((spell) => spell.data.preparation.mode !== 'item');
+    // const nonItemSpells = spells.filter((spell) => spell.data.preparation.mode !== 'item');
+    const nonItemSpells = spells.filter((spell) => {
+      if (spell.data.preparation.mode !== 'item') {
+        return true;
+      }
+
+      const parentItemUuid = foundry.utils.getProperty(
+        spell,
+        `flags.${ItemsWithSpells5e.MODULE_ID}.${ItemsWithSpells5e.FLAGS.parentItem}`,
+      );
+
+      return !this.actor.items.find((item) => item.uuid === parentItemUuid);
+    });
 
     const spellbook = wrapped(data, nonItemSpells);
 
