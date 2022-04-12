@@ -1,0 +1,84 @@
+<form autocomplete="off">
+  <h2>Configure Overrides</h2>
+
+<ol class="warnings">
+    {{#if parentItem.isOwned}}<li class="notification warning">You are editing an owned Item's spells, any changes made here will not be applied to the spells on the owning actor.</li>{{/if}}
+</ol>
+
+
+
+  <div class="details">
+  {{!-- Limited Uses --}}
+  <h3 class="form-header">Consumption</h3>
+  <div class="form-group uses-per">
+    <label>{{ localize "DND5E.LimitedUses" }}</label>
+    <div class="form-fields">
+      <input type="text" name="overrides.data.uses.value" value="{{overrides.data.uses.value}}" data-dtype="Number" />
+      <span class="sep">{{ localize "DND5E.of" }}</span>
+      <input type="text" name="overrides.data.uses.max" value="{{overrides.data.uses.max}}" />
+      <span class="sep">{{ localize "DND5E.per" }}</span>
+      <select name="overrides.data.uses.per">
+        {{#select overrides.data.uses.per}}
+        <option value=""></option>
+        {{#each config.limitedUsePeriods as |name key|}}
+        <option value="{{key}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
+  </div>
+  <p class="notes">If this spell has a number of uses per rest or similar innate limitations, configure the number of charges above.</p>
+
+  <hr />
+
+  {{!-- Consumption --}}
+  <div class="form-group uses-per">
+    <label>{{ localize "DND5E.ConsumeTitle" }}</label>
+    <div class="form-fields">
+      <select name="overrides.data.consume.type" disabled>
+        <option value="charges" selected>{{localize "DND5E.ConsumeCharges"}}</option>
+      </select>
+      <select name="overrides.data.consume.target" disabled>
+        <option value="{{parentItem.id}}" selected>{{parentItem.name}}</option>
+      </select>
+      <input type="text" name="overrides.data.consume.amount" value="{{overrides.data.consume.amount}}" data-dtype="Number" />
+    </div>
+  </div>
+  <p class="notes">If this spell will be cast using charges from the parent item, configure the number of charges above.</p>
+
+  <h3 class="form-header">Saving Throw</h3>
+  {{!-- Saving Throw --}}
+  <div class="form-group input-select">
+      <label>{{ localize "DND5E.ActionSave" }}</label>
+      <div class="form-fields">
+          <select name="save.ability" disabled>
+              {{#select save.ability}}
+              <option value=""></option>
+              {{#each config.abilities as |ability a|}}
+              <option value="{{a}}">{{ability}}</option>
+              {{/each}}
+              {{/select}}
+          </select>
+          <span>{{ localize "DND5E.VsDC" }}</span>
+          <input type="text" name="overrides.data.save.dc" value="{{#if overrides.data.save.dc}}{{overrides.data.save.dc}}{{/if}}" data-dtype="Number" placeholder="{{ localize 'DND5E.AbbreviationDC' }}"/>
+          <select name="overrides.data.save.scaling">
+              {{#select overrides.data.save.scaling}}
+              <option value="spell">{{ localize "DND5E.Spellcasting" }}</option>
+              {{#each config.abilities as |ability a|}}
+              <option value="{{a}}">{{ability}}</option>
+              {{/each}}
+              <option value="flat">{{ localize "DND5E.Flat" }}</option>
+              {{/select}}
+          </select>
+      </div>
+  </div>
+  <p class="notes">If this spell has a flat DC or other specialized saving throw logic.</p>
+  </div>
+
+
+
+
+  <button type="submit" name="submit">
+    <i class="far fa-save"></i> {{localize "Save"}}
+  </button>
+</form>

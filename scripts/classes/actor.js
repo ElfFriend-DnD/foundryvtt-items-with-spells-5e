@@ -61,9 +61,20 @@ export class ItemsWithSpells5eActor {
       return;
     }
 
+    if (!itemDeleted.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length) {
+      return;
+    }
+
     ItemsWithSpells5e.log(false, 'handleDeleteItem', itemDeleted);
 
-    this.removeChildSpellsFromActor(itemDeleted);
+    const alsoDeleteChildSpells = await Dialog.confirm({
+      title: 'Items with Spells',
+      content: 'Would you also like to delete the spells from that item?',
+    });
+
+    if (alsoDeleteChildSpells) {
+      await this.removeChildSpellsFromActor(itemDeleted);
+    }
   };
 
   /**
@@ -107,6 +118,25 @@ export class ItemsWithSpells5eActor {
 
     ItemsWithSpells5e.log(false, 'handleCreateItem', itemCreated);
 
-    this.addChildSpellsToActor(itemCreated);
+    if (!itemCreated.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length) {
+      return;
+    }
+
+    const createdDocuments = await this.addChildSpellsToActor(itemCreated);
+
+    const newFlagDataArray = itemCreated
+      .getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)
+      ?.map((flagData) => {
+        const relevantCreatedDocument = createdDocuments.find(
+          (item) => item.getFlag('core', 'sourceId') === flagData.uuid,
+        );
+
+        return {
+          ...flagData,
+          uuid: relevantCreatedDocument?.uuid ?? flagData.uuid,
+        };
+      });
+
+    itemCreated.setFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells, newFlagDataArray);
   };
 }

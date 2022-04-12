@@ -18,6 +18,7 @@ export class ItemsWithSpells5e {
 
   static TEMPLATES = {
     spellsTab: `modules/${this.MODULE_ID}/templates/spells-tab.hbs`,
+    overrides: `modules/${this.MODULE_ID}/templates/overrides-form.hbs`,
   };
 
   /**

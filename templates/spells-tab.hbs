@@ -1,5 +1,12 @@
 <div class="items-with-spells-tab">
   <h3 class="form-header">Spells</h3>
+
+
+  <ol class="warnings">
+      {{#if @root.isOwned}}<li class="notification warning">Which spells are on an Owned Item cannot be edited.</li>{{/if}}
+  </ol>
+
+
   <ol class="items-list">
     <ol class="item-list">
       {{#each itemSpells as |spell|}}
@@ -9,7 +16,11 @@
           <h4>{{spell.name}}</h4>
         </div>
 
-        {{#if @root/isOwner}}
+        {{#if (and @root/isOwner (not @root/isOwned))}}
+        <div class="item-controls">
+          <a class="item-control configure-overrides" title="Configure Overrides"><i class="fas fa-edit"></i></a>
+        </div>
+
         <div class="item-controls context-menu">
             <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
         </div>

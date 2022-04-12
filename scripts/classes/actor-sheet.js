@@ -66,6 +66,10 @@ export class ItemsWithSpells5eActorSheet {
 
     // create a new spellbook section for each item with spells attached
     itemsWithSpells.forEach((itemWithSpells) => {
+      if (itemWithSpells.data.data.attunement === 1) {
+        return;
+      }
+
       const section = createItemSection(
         itemWithSpells.name,
         itemWithSpells.data.data?.uses?.value,
