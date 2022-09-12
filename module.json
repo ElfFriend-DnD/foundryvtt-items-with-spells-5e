@@ -1,11 +1,9 @@
 {
-  "name": "items-with-spells-5e",
+  "id": "items-with-spells-5e",
   "title": "Items with Spells DnD5e",
   "description": "",
   "version": "0.0.0",
   "manifestPlusVersion": "1.1.0",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9",
   "author": "Andrew Krigline (akrigline)",
   "authors": [
     {
@@ -16,20 +14,11 @@
       "ko-fi": "https://ko-fi.com/elffriend"
     }
   ],
-  "dependencies": [
-    {
-      "name": "lib-wrapper",
-      "type": "module"
-    }
-  ],
-  "conflicts": [
-
-  ],
   "esmodules": [
     "/scripts/items-with-spells-5e.js"
   ],
   "styles": [
-    "/styles/module.css"
+    "/styles/items-with-spells-5e.css"
   ],
   "languages": [
     {
@@ -38,6 +27,21 @@
       "path": "lang/en.json"
     }
   ],
+  "relationships": {
+    "systems": [{
+      "id": "dnd5e",
+      "type": "system",
+      "compatibility": {
+        "minimum": "2.0.0"
+      }
+    }],
+    "requires": [{
+      "id": "lib-wrapper",
+      "compatibility": {
+        "minimum": "1.12.7.1"
+      }
+    }]
+  },
   "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/issues",
   "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/releases",
   "download": "https://github.com/ElfFriend-DnD/foundryvtt-itemsWithSpells/releases/latest/download/module.zip",

@@ -24,11 +24,16 @@ export class ItemsWithSpells5eItemSpellOverrides extends FormApplication {
     this.itemSpellItem = itemWithSpellsItem.itemSpellItemMap.get(itemSpellId);
   }
 
+  get title() {
+    return `${this.item.name} - ${this.itemSpellItem.name}`;
+  }
+
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ['dnd5e', 'sheet', 'item'],
       template: ItemsWithSpells5e.TEMPLATES.overrides,
       width: 560,
+      closeOnSubmit: false,
       height: 400,
     });
   }
@@ -46,7 +51,7 @@ export class ItemsWithSpells5eItemSpellOverrides extends FormApplication {
     });
 
     return {
-      save: this.itemSpellItem.data.data.save,
+      save: this.itemSpellItem.system.save,
       overrides: this.object,
       config: {
         limitedUsePeriods: CONFIG.DND5E.limitedUsePeriods,

@@ -1,3 +1,10 @@
 {
-    "MODULE.hello": "hello"
+  "items-with-spells-5e": {
+    "CONFIG_OVERRIDES": "Configure Overrides",
+    "WARN_OWNED": "You are editing an owned Item's spells, any changes made here will not be applied to the spells on the owning actor.",
+    "LIMITED_HINT": "If this spell has a number of uses per rest or similar innate limitations, configure the number of charges above.",
+    "CHARGES_HINT": "If this spell will be cast using charges from the parent item, configure the number of charges above.",
+    "SAVE_HINT": "If this spell has a flat DC or other specialized saving throw logic.",
+    "WARN_CANNOT_ADDREMOVE": "An Owned Item's spells cannot be added to or removed from. These spells have been added to the Actor's Spellbook Tab."
+  }
 }

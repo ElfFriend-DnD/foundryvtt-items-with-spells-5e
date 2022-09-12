@@ -65,9 +65,15 @@ export class ItemsWithSpells5eItemSheet {
    */
   async _renderSpellsList() {
     const itemSpellsArray = [...(await this.itemWithSpellsItem.itemSpellItemMap).values()];
+
     ItemsWithSpells5e.log(false, 'rendering list', itemSpellsArray);
+
     return renderTemplate(ItemsWithSpells5e.TEMPLATES.spellsTab, {
       itemSpells: itemSpellsArray,
+      config: {
+        limitedUsePeriods: CONFIG.DND5E.limitedUsePeriods,
+        abilities: CONFIG.DND5E.abilities,
+      },
       isOwner: this.item.isOwner,
       isOwned: this.item.isOwned,
     });
@@ -75,16 +81,11 @@ export class ItemsWithSpells5eItemSheet {
 
   /**
    * Ensure the item dropped is a spell, add the spell to the item flags.
+   * @returns Promise that resolves when the item has been modified
    */
   async _dragEnd(event) {
     ItemsWithSpells5e.log(false, 'dragEnd', { event });
-
-    let data;
-    try {
-      data = JSON.parse(event.dataTransfer.getData('text/plain'));
-    } catch (err) {
-      return;
-    }
+    const data = TextEditor.getDragEventData(event);
 
     ItemsWithSpells5e.log(false, 'dragEnd', { data });
 
@@ -92,7 +93,8 @@ export class ItemsWithSpells5eItemSheet {
       return;
     }
 
-    const item = await Item.implementation.fromDropData(data);
+    const item = fromUuidSync(data.uuid);
+
     ItemsWithSpells5e.log(false, 'dragEnd', { item });
 
     if (item.type !== 'spell') {
@@ -101,13 +103,13 @@ export class ItemsWithSpells5eItemSheet {
 
     // set the flag to re-open this tab when the update completes
     this._shouldOpenSpellsTab = true;
-    await this.itemWithSpellsItem.addSpellToItem(item.uuid);
+    return this.itemWithSpellsItem.addSpellToItem(data.uuid);
   }
 
   async _handleItemClick(event) {
     const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
     const item = this.itemWithSpellsItem.itemSpellItemMap.get(itemId);
-    item?.sheet.render(true, { editable: this.item.isOwned });
+    item?.sheet.render(true);
   }
 
   async _handleItemDeleteClick(event) {
@@ -125,10 +127,11 @@ export class ItemsWithSpells5eItemSheet {
   }
 
   /**
-   * Synchronous part of the render which calls the asynchronous `render`
+   * Synchronous part of the render which calls the asynchronous `renderHeavy`
    * This allows for less delay during the update -> renderItemSheet -> set tab cycle
    */
   renderLite() {
+    ItemsWithSpells5e.log(false, 'RENDERING');
     // Update the nav menu
     const spellsTabButton = $(
       '<a class="item" data-tab="spells">' + game.i18n.localize(`DND5E.ItemTypeSpellPl`) + '</a>',
@@ -149,7 +152,11 @@ export class ItemsWithSpells5eItemSheet {
     this.renderHeavy(spellsTab);
   }
 
+  /**
+   * Heavy lifting part of the spells tab rendering which involves getting the spells and painting them
+   */
   async renderHeavy(spellsTab) {
+    // await this.itemWithSpellsItem.refresh();
     // Add the list to the tab
     const spellsTabHtml = $(await this._renderSpellsList());
     spellsTab.append(spellsTabHtml);

@@ -1,13 +1,32 @@
 <div class="items-with-spells-tab">
-  <h3 class="form-header">Spells</h3>
-
-
-  <ol class="warnings">
-      {{#if @root.isOwned}}<li class="notification warning">Which spells are on an Owned Item cannot be edited.</li>{{/if}}
+  <ol class="warnings items-with-spells-warnings">
+    {{#if @root.isOwned}}<li class="notification warning">{{localize "items-with-spells-5e.WARN_CANNOT_ADDREMOVE"}}</li>
+    {{/if}}
   </ol>
 
 
-  <ol class="items-list">
+  <ol class="items-list items-with-spells-items-list">
+    <li class="items-header flexrow">
+      <h3 class="item-name flexrow">
+        {{localize 'DND5E.ItemTypeSpellPl'}}
+      </h3>
+
+      <div class="item-detail">
+        {{localize 'DND5E.ActionSave'}}
+      </div>
+
+      <div class="item-detail spell-uses">
+        {{localize 'DND5E.Uses'}}
+      </div>
+
+      <div class="item-detail spell-uses">
+        {{localize 'DND5E.Charges'}}
+      </div>
+
+      <div class="item-controls"></div>
+
+    </li>
+
     <ol class="item-list">
       {{#each itemSpells as |spell|}}
       <li class="item context-enabled flexrow" data-item-id="{{spell.id}}">
@@ -16,15 +35,32 @@
           <h4>{{spell.name}}</h4>
         </div>
 
-        {{#if (and @root/isOwner (not @root/isOwned))}}
-        <div class="item-controls">
-          <a class="item-control configure-overrides" title="Configure Overrides"><i class="fas fa-edit"></i></a>
+        <div class="item-detail item-with-spells-item-detail">
+          {{#if spell.labels.save}}
+          <span title="{{labels.save}}">{{labels.save}}</span>
+          {{/if}}
         </div>
 
-        <div class="item-controls context-menu">
-            <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        <div class="item-detail item-with-spells-item-detail">
+          {{#if (gt spell.system.uses.max 0)}}
+          {{spell.system.uses.max}}
+          <span class="sep">{{ localize "DND5E.per" }}</span>
+          {{lookup @root/config.limitedUsePeriods spell.system.uses.per}}
+          {{/if}}
         </div>
-        {{/if}}
+
+        <div class="item-detail item-with-spells-item-detail">
+          {{#if (gt spell.system.consume.amount 0)}}
+          {{spell.system.consume.amount}}
+          {{localize 'DND5E.Charges'}}
+          {{/if}}
+        </div>
+
+        <div class="item-controls flexrow context-menu item-with-spells-item-controls">
+          <a class="item-control configure-overrides" title="Configure Overrides"><i class="fas fa-edit"></i></a>
+
+          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+        </div>
       </li>
       {{/each}}
     </ol>

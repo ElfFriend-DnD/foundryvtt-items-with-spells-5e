@@ -11,14 +11,14 @@ export class ItemsWithSpells5eActorSheet {
   static init() {
     libWrapper.register(
       ItemsWithSpells5e.MODULE_ID,
-      'game.dnd5e.applications.ActorSheet5eCharacter.prototype._prepareSpellbook',
+      'dnd5e.applications.actor.ActorSheet5eCharacter.prototype._prepareSpellbook',
       ItemsWithSpells5eActorSheet.prepareItemSpellbook,
       'WRAPPER',
     );
 
     libWrapper.register(
       ItemsWithSpells5e.MODULE_ID,
-      'game.dnd5e.applications.ActorSheet5eNPC.prototype._prepareSpellbook',
+      'dnd5e.applications.actor.ActorSheet5eNPC.prototype._prepareSpellbook',
       ItemsWithSpells5eActorSheet.prepareItemSpellbook,
       'WRAPPER',
     );
@@ -26,9 +26,8 @@ export class ItemsWithSpells5eActorSheet {
 
   static prepareItemSpellbook(wrapped, data, spells) {
     ItemsWithSpells5e.log(false, 'preparing spells', { spells, data });
-    // const nonItemSpells = spells.filter((spell) => spell.data.preparation.mode !== 'item');
     const nonItemSpells = spells.filter((spell) => {
-      if (spell.data.preparation.mode !== 'item') {
+      if (spell.system.preparation.mode !== 'item') {
         return true;
       }
 
@@ -58,7 +57,7 @@ export class ItemsWithSpells5eActorSheet {
       prop: 'item',
     });
 
-    const spellItems = spells.filter((spell) => spell.data.preparation.mode === 'item');
+    const spellItems = spells.filter((spell) => spell.system.preparation.mode === 'item');
 
     const itemsWithSpells = this.actor.items.filter(
       (item) => item.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length,
@@ -66,14 +65,14 @@ export class ItemsWithSpells5eActorSheet {
 
     // create a new spellbook section for each item with spells attached
     itemsWithSpells.forEach((itemWithSpells) => {
-      if (itemWithSpells.data.data.attunement === 1) {
+      if (itemWithSpells.system.attunement === 1) {
         return;
       }
 
       const section = createItemSection(
         itemWithSpells.name,
-        itemWithSpells.data.data?.uses?.value,
-        itemWithSpells.data.data?.uses?.max,
+        itemWithSpells.system?.uses?.value,
+        itemWithSpells.system?.uses?.max,
       );
 
       section.spells = spellItems.filter((spell) => {
