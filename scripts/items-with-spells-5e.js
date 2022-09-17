@@ -13,7 +13,6 @@ export class ItemsWithSpells5e {
   static FLAGS = {
     itemSpells: 'item-spells',
     parentItem: 'parent-item',
-    // sourceUuid: 'source-uuid',
   };
 
   static TEMPLATES = {
@@ -49,11 +48,6 @@ Hooks.once('init', () => {
   ItemsWithSpells5e.log(true, 'Initialized');
 
   ItemsWithSpells5e.preloadTemplates();
-
-  // CONFIG.DND5E.spellPreparationModes = {
-  //   ...CONFIG.DND5E.spellPreparationModes,
-  //   item: 'Item',
-  // };
 
   ItemsWithSpells5eActorSheet.init();
 });

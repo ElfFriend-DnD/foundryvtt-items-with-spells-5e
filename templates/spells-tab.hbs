@@ -57,9 +57,11 @@
         </div>
 
         <div class="item-controls flexrow context-menu item-with-spells-item-controls">
+          {{#if (and @root/isOwner (not @root/isOwned))}}
           <a class="item-control configure-overrides" title="Configure Overrides"><i class="fas fa-edit"></i></a>
 
           <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          {{/if}}
         </div>
       </li>
       {{/each}}
