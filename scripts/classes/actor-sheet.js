@@ -27,14 +27,14 @@ export class ItemsWithSpells5eActorSheet {
   static prepareItemSpellbook(wrapped, data, spells) {
     ItemsWithSpells5e.log(false, 'preparing spells', { spells, data });
     const nonItemSpells = spells.filter((spell) => {
-      if (spell.system.preparation.mode !== 'item') {
-        return true;
-      }
-
       const parentItemUuid = foundry.utils.getProperty(
         spell,
         `flags.${ItemsWithSpells5e.MODULE_ID}.${ItemsWithSpells5e.FLAGS.parentItem}`,
       );
+
+      if (!parentItemUuid) {
+        return true;
+      }
 
       return !this.actor.items.find((item) => item.uuid === parentItemUuid);
     });
@@ -57,7 +57,9 @@ export class ItemsWithSpells5eActorSheet {
       prop: 'item',
     });
 
-    const spellItems = spells.filter((spell) => spell.system.preparation.mode === 'item');
+    const spellItems = spells.filter((spell) =>
+      foundry.utils.getProperty(spell, `flags.${ItemsWithSpells5e.MODULE_ID}.${ItemsWithSpells5e.FLAGS.parentItem}`),
+    );
 
     const itemsWithSpells = this.actor.items.filter(
       (item) => item.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length,

@@ -78,7 +78,7 @@ export class ItemsWithSpells5eItem {
     const fixedChanges = {
       ['flags.core.sourceId']: uuid, // set the sourceId as the original spell
       [`flags.${ItemsWithSpells5e.MODULE_ID}.${ItemsWithSpells5e.FLAGS.parentItem}`]: this.item.uuid,
-      ['system.preparation.mode']: 'item',
+      ['system.preparation.mode']: 'atwill',
     };
 
     const update = foundry.utils.mergeObject(changes, fixedChanges);

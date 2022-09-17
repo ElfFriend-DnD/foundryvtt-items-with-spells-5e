@@ -50,10 +50,10 @@ Hooks.once('init', () => {
 
   ItemsWithSpells5e.preloadTemplates();
 
-  CONFIG.DND5E.spellPreparationModes = {
-    ...CONFIG.DND5E.spellPreparationModes,
-    item: 'Item',
-  };
+  // CONFIG.DND5E.spellPreparationModes = {
+  //   ...CONFIG.DND5E.spellPreparationModes,
+  //   item: 'Item',
+  // };
 
   ItemsWithSpells5eActorSheet.init();
 });
