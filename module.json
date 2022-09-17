@@ -53,6 +53,9 @@
   "readme": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-items-with-spells-5e/main/README.md",
   "url": "https://github.com/ElfFriend-DnD/foundryvtt-items-with-spells-5e",
   "flags": {
-    "allowBugReporter": true
+    "allowBugReporter": true,
+    "fvttdevleague": {
+        "package-jam": 2022
+    }
   }
 }
