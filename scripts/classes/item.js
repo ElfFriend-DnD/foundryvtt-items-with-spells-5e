@@ -4,6 +4,27 @@ import { ItemsWithSpells5eActor } from './actor.js';
 import { ItemsWithSpells5eItemSheet } from './item-sheet.js';
 
 /**
+ * Creates a fake temporary item as filler for when a UUID is unable to resolve an item
+ * @param {string} uuid - the `uuid` of the source of this item
+ * @returns item with the correct flags to allow deletion
+ */
+const FakeEmptySpell = (uuid) =>
+  new Item.implementation(
+    {
+      name: game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.MISSING_ITEM`),
+      img: 'icons/svg/hazard.svg',
+      type: 'spell',
+      system: {
+        description: {
+          value: game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.MISSING_ITEM_DESCRIPTION`),
+        },
+      },
+      _id: uuid.split('.').pop(),
+    },
+    { temporary: true },
+  );
+
+/**
  * A class made to make managing the operations for an Item with spells attached easier.
  */
 export class ItemsWithSpells5eItem {
@@ -61,12 +82,13 @@ export class ItemsWithSpells5eItem {
    */
   async _getChildItem({ uuid, changes = {} }) {
     // original could be in a compendium or on an actor
-    const original = await fromUuid(uuid);
+    let original = await fromUuid(uuid);
 
     ItemsWithSpells5e.log(false, 'original', original);
 
+    // return a fake 'empty' item if we could not create a childItem
     if (!original) {
-      return undefined;
+      original = FakeEmptySpell(uuid);
     }
 
     // this exists if the 'child' spell has been created on an actor
@@ -109,6 +131,7 @@ export class ItemsWithSpells5eItem {
     await Promise.all(
       this.itemSpellList.map(async ({ uuid, changes }) => {
         const childItem = await this._getChildItem({ uuid, changes });
+
         if (!childItem) return;
 
         itemMap.set(childItem.id, childItem);

@@ -115,6 +115,8 @@ export class ItemsWithSpells5eItemSheet {
   async _handleItemDeleteClick(event) {
     const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
 
+    ItemsWithSpells5e.log(false, 'deleting', itemId, this.itemWithSpellsItem.itemSpellItemMap);
+
     // set the flag to re-open this tab when the update completes
     this._shouldOpenSpellsTab = true;
     await this.itemWithSpellsItem.removeSpellFromItem(itemId);

@@ -5,6 +5,8 @@
     "LIMITED_HINT": "If this spell has a number of uses per rest or similar innate limitations, configure the number of charges above.",
     "CHARGES_HINT": "If this spell will be cast using charges from the parent item, configure the number of charges above.",
     "SAVE_HINT": "If this spell has a flat DC or other specialized saving throw logic.",
-    "WARN_CANNOT_ADDREMOVE": "An Owned Item's spells cannot be added to or removed from. These spells have been added to the Actor's Spellbook Tab."
+    "WARN_CANNOT_ADDREMOVE": "An Owned Item's spells cannot be added to or removed from. These spells have been added to the Actor's Spellbook Tab.",
+    "MISSING_ITEM": "Missing Item",
+    "MISSING_ITEM_DESCRIPTION": "This Spell's original item could not be found. Maybe it was deleted?"
   }
 }
