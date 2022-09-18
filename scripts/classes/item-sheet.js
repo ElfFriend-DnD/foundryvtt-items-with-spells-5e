@@ -109,8 +109,9 @@ export class ItemsWithSpells5eItemSheet {
   async _handleItemClick(event) {
     const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
     const item = this.itemWithSpellsItem.itemSpellItemMap.get(itemId);
+    ItemsWithSpells5e.log(false, '_handleItemClick', !!item.isOwned && !!item.isOwner);
     item?.sheet.render(true, {
-      editable: false,
+      editable: !!item.isOwned && !!item.isOwner,
     });
   }
 
