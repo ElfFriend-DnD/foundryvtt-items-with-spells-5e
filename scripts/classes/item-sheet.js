@@ -109,7 +109,9 @@ export class ItemsWithSpells5eItemSheet {
   async _handleItemClick(event) {
     const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
     const item = this.itemWithSpellsItem.itemSpellItemMap.get(itemId);
-    item?.sheet.render(true);
+    item?.sheet.render(true, {
+      editable: false,
+    });
   }
 
   async _handleItemDeleteClick(event) {
