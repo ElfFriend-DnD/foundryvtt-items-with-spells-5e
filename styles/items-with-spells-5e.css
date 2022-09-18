@@ -1,0 +1,21 @@
+.items-with-spells-tab {
+  display: flex;
+  flex-direction: column;
+}
+
+.items-with-spells-warnings {
+  flex: 1 0 auto !important;
+}
+
+.items-with-spells-items-list {
+  height: 100%;
+}
+
+.item-with-spells-item-detail {
+  text-align: center;
+  font-size: 12px;
+}
+
+.item-with-spells-item-controls {
+  border-left: 1px solid #c9c7b8;
+}

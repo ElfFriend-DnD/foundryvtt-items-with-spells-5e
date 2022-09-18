@@ -15,8 +15,5 @@ npm-debug.log
 !.yarn/versions
 .pnp.*
 
-# Distribution files
-**/*.css
-
 # ESLint
 .eslintcache
