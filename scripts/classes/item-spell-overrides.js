@@ -24,6 +24,10 @@ export class ItemsWithSpells5eItemSpellOverrides extends FormApplication {
     this.itemSpellItem = itemWithSpellsItem.itemSpellItemMap.get(itemSpellId);
   }
 
+  get id() {
+    return `${ItemsWithSpells5e.MODULE_ID}-${this.item.id}-${this.itemSpellItem.id}`;
+  }
+
   get title() {
     return `${this.item.name} - ${this.itemSpellItem.name}`;
   }
