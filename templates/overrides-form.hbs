@@ -7,12 +7,33 @@
   </ol>
 
   <div class="details">
+
+
+    <h3 class="form-header">{{ localize "DND5E.SpellDetails" }}</h3>
+
+    {{!-- Spell Level --}}
+    <div class="form-group">
+        <label>{{ localize "DND5E.SpellLevel" }}</label>
+        <select name="overrides.system.level" data-dtype="Number">
+            {{#select spellLevelToDisplay}}
+            {{#each config.spellLevels as |name lvl|}}
+            <option value="{{lvl}}">{{name}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+    </div>
+
+    <p class="notes">{{localize "items-with-spells-5e.SPELL_LEVEL_HINT"}}</p>
+
+    <hr />
+
+
     {{!-- Limited Uses --}}
     <h3 class="form-header">{{localize "DND5E.ConsumeTitle"}}</h3>
     <div class="form-group uses-per">
       <label>{{ localize "DND5E.LimitedUses" }}</label>
       <div class="form-fields">
-        <input type="text" name="overrides.system.uses.value" value="{{overrides.system.uses.value}}"
+        <input type="text" name="overrides.system.uses.value" value="{{overrides.system.uses.max}}" disabled
           data-dtype="Number" />
         <span class="sep">{{ localize "DND5E.of" }}</span>
         <input type="text" name="overrides.system.uses.max" value="{{overrides.system.uses.max}}" />
@@ -61,9 +82,11 @@
           {{/select}}
         </select>
         <span>{{ localize "DND5E.VsDC" }}</span>
+
         <input type="text" name="overrides.system.save.dc"
           value="{{#if overrides.system.save.dc}}{{overrides.system.save.dc}}{{/if}}" data-dtype="Number"
-          placeholder="{{ localize 'DND5E.AbbreviationDC' }}" />
+          placeholder="{{ localize 'DND5E.AbbreviationDC' }}" {{#unless isFlatDC}}disabled{{/unless}}/>
+
         <select name="overrides.system.save.scaling">
           {{#select overrides.system.save.scaling}}
           <option value="spell">{{ localize "DND5E.Spellcasting" }}</option>

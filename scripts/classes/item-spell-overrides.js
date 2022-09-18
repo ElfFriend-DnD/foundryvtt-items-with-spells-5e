@@ -34,39 +34,36 @@ export class ItemsWithSpells5eItemSpellOverrides extends FormApplication {
       template: ItemsWithSpells5e.TEMPLATES.overrides,
       width: 560,
       closeOnSubmit: false,
-      height: 400,
+      submitOnChange: true,
+      height: 'auto',
     });
   }
 
   getData() {
-    ItemsWithSpells5e.log(false, 'getData', {
-      item: this.itemWithSpellsItem,
-      itemSpellitem: this.itemSpellItem,
-      object: this.object,
-      parentItem: {
-        id: this.item.id,
-        name: this.item.name,
-        isOwned: this.item.isOwned,
-      },
-    });
-
-    return {
+    const ret = {
+      spellLevelToDisplay: this.object?.system?.level ?? this.itemSpellItem?.system?.level,
       save: this.itemSpellItem.system.save,
       overrides: this.object,
       config: {
         limitedUsePeriods: CONFIG.DND5E.limitedUsePeriods,
         abilities: CONFIG.DND5E.abilities,
+        spellLevels: CONFIG.DND5E.spellLevels,
       },
+      isFlatDC: this.object?.system?.save?.scaling === 'flat',
       parentItem: {
         id: this.item.id,
         name: this.item.name,
         isOwned: this.item.isOwned,
       },
     };
+
+    ItemsWithSpells5e.log(false, 'getData', ret);
+
+    return ret;
   }
 
   async _updateObject(event, formData) {
-    ItemsWithSpells5e.log(false, '_updateObject', formData);
+    ItemsWithSpells5e.log(false, '_updateObject', event, formData);
 
     const formDataExpanded = foundry.utils.expandObject(formData);
 
@@ -74,10 +71,15 @@ export class ItemsWithSpells5eItemSpellOverrides extends FormApplication {
 
     this.object = formDataExpanded.overrides;
 
-    this.render();
-
     if (this.item.isOwned) {
       ui.notifications.warn('The existing spells on the parent actor will not be modified to reflect this change.');
+    }
+
+    // close if this is a submit (button press or `enter` key)
+    if (event instanceof SubmitEvent) {
+      this.close();
+    } else {
+      this.render();
     }
   }
 }
