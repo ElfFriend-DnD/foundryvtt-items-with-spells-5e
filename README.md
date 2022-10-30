@@ -78,6 +78,18 @@ The spells listed can be used like normal. The Core System's consumption behavio
 https://user-images.githubusercontent.com/7644614/190871810-824db216-56fa-4411-9e03-ada2a9c0f251.mp4
 
 
+## API
+
+When programatically deleting items that have spells attached, it is possible to skip the prompt for the user by providing the following object in the [DocumentModificationContext](https://foundryvtt.com/api/classes/foundry.abstract.Document.html#delete) option of the `delete` method.
+
+```
+someItem.delete({
+  itemsWithSpells5e: { alsoDeleteChildSpells: true } // or false
+})
+```
+
+The logic within this module will respect the boolean provided, deleting the child item spells itself if `true`, or leaving them alone if `false`.
+
 ## Compatibility
 
 Compatible with:

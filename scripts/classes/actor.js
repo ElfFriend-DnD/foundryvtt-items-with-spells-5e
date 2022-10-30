@@ -65,12 +65,14 @@ export class ItemsWithSpells5eActor {
       return;
     }
 
-    ItemsWithSpells5e.log(false, 'handleDeleteItem', itemDeleted);
+    ItemsWithSpells5e.log(false, 'handleDeleteItem', itemDeleted, options);
 
-    const alsoDeleteChildSpells = await Dialog.confirm({
-      title: 'Items with Spells',
-      content: 'Would you also like to delete the spells from that item?',
-    });
+    const alsoDeleteChildSpells =
+      options?.itemsWithSpells5e?.alsoDeleteChildSpells ??
+      (await Dialog.confirm({
+        title: 'Items with Spells',
+        content: 'Would you also like to delete the spells from that item?',
+      }));
 
     if (alsoDeleteChildSpells) {
       await this.removeChildSpellsFromActor(itemDeleted);
