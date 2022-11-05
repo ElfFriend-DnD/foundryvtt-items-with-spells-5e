@@ -160,12 +160,37 @@ export class ItemsWithSpells5eItem {
 
   /**
    * Adds a given UUID to the item's spell list
-   * @param {string} uuid
+   * @param {string} providedUuid
    */
-  async addSpellToItem(uuid) {
+  async addSpellToItem(providedUuid) {
+    // MUTATED if this is an owned item
+    let uuid = providedUuid;
+
     if (this.item.isOwned) {
-      ui.notifications.error('Not supported');
-      return;
+      // if this item is already on an actor, we need to
+      // 0. see if the uuid is already on the actor
+      // 1. create the dropped uuid on the Actor's item list (OR update that item to be a child of this one)
+      // 2. get the new uuid from the created item
+      // 3. add that uuid to this item's flags\
+      const fullItemData = await fromUuid(uuid);
+
+      if (!fullItemData) {
+        ui.notifications.error('Item data not found');
+        console.error('Item data for', uuid, 'not found');
+        return;
+      }
+
+      const adjustedItemData = foundry.utils.mergeObject(fullItemData.toObject(), {
+        ['flags.core.sourceId']: uuid, // set the sourceId as the original spell
+        [`flags.${ItemsWithSpells5e.MODULE_ID}.${ItemsWithSpells5e.FLAGS.parentItem}`]: this.item.uuid,
+        ['system.preparation.mode']: 'atwill',
+      });
+
+      const [newItem] = await this.item.parent.createEmbeddedDocuments('Item', [adjustedItemData]);
+
+      uuid = newItem.uuid;
+
+      ItemsWithSpells5e.log(false, 'new item created', newItem);
     }
 
     const itemSpells = [...this.itemSpellList, { uuid }];
@@ -184,8 +209,12 @@ export class ItemsWithSpells5eItem {
 
     await this.refresh();
 
-    // now re-render the item sheets
+    // now re-render the item and actor sheets
     this.item.render();
+
+    if (this.item.parent) {
+      this.item.parent.render();
+    }
   }
 
   /**
