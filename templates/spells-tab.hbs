@@ -51,10 +51,14 @@
         </div>
 
         <div class="item-controls flexrow context-menu item-with-spells-item-controls">
-          {{#if (and @root/isOwner (not @root/isOwned))}}
-          <a class="item-control configure-overrides" title="Configure Overrides"><i class="fas fa-edit"></i></a>
+          {{#if @root/isOwner}}
+          <a class="item-control configure-overrides" title="Configure{{#unless @root/isOwned}} Overrides{{/unless}}"><i class="fas fa-edit"></i></a>
 
-          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          <a class="item-control item-delete" title="Remove Link"><i class="fas {{#if @root/isOwned}}fa-link-slash{{else}}fa-trash{{/if}}"></i></a>
+
+          {{#if @root/isOwned}}
+          <a class="item-control item-destroy" title="Delete Spell"><i class="fas fa-trash"></i></a>
+          {{/if}}
           {{/if}}
         </div>
       </li>

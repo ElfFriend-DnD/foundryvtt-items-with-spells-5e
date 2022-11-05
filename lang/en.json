@@ -1,5 +1,6 @@
 {
   "items-with-spells-5e": {
+    "MODULE_NAME": "Items with Spells",
     "CONFIG_OVERRIDES": "Configure Overrides",
     "WARN_OWNED": "You are editing an owned Item's spells, any changes made here will not be applied to the spells on the owning actor.",
     "SPELL_LEVEL_HINT": "If this spell is to be cast at a specific level, configure the level above.",
@@ -8,6 +9,8 @@
     "SAVE_HINT": "If this spell has a flat DC or other specialized saving throw logic.",
     "WARN_CANNOT_ADDREMOVE": "An Owned Item's spells cannot be added to or removed from. These spells have been added to the Actor's Spellbook Tab.",
     "MISSING_ITEM": "Missing Item",
-    "MISSING_ITEM_DESCRIPTION": "This Spell's original item could not be found. Maybe it was deleted?"
+    "MISSING_ITEM_DESCRIPTION": "This Spell's original item could not be found. Maybe it was deleted?",
+    "WARN_ALSO_DELETE": "This will also delete the Spell from the Actor. Are you certain you want to delete the embedded spell?",
+    "QUERY_ALSO_DELETE": "Would you also like to delete the spells from that item?"
   }
 }

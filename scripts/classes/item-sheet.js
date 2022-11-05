@@ -106,6 +106,9 @@ export class ItemsWithSpells5eItemSheet {
     return this.itemWithSpellsItem.addSpellToItem(data.uuid);
   }
 
+  /**
+   * Event Handler that opens the item's sheet
+   */
   async _handleItemClick(event) {
     const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
     const item = this.itemWithSpellsItem.itemSpellItemMap.get(itemId);
@@ -115,6 +118,9 @@ export class ItemsWithSpells5eItemSheet {
     });
   }
 
+  /**
+   * Event Handler that removes the link between this item and the spell
+   */
   async _handleItemDeleteClick(event) {
     const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
 
@@ -125,8 +131,30 @@ export class ItemsWithSpells5eItemSheet {
     await this.itemWithSpellsItem.removeSpellFromItem(itemId);
   }
 
+  /**
+   * Event Handler that also Deletes the embedded spell
+   */
+  async _handleItemDestroyClick(event) {
+    const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
+
+    ItemsWithSpells5e.log(false, 'destroying', itemId, this.itemWithSpellsItem.itemSpellItemMap);
+
+    // set the flag to re-open this tab when the update completes
+    this._shouldOpenSpellsTab = true;
+    await this.itemWithSpellsItem.removeSpellFromItem(itemId, { alsoDeleteEmbeddedSpell: true });
+  }
+
+  /**
+   * Event Handler that opens the item's sheet or config overrides, depending on if the item is owned
+   */
   async _handleItemEditClick(event) {
     const { itemId } = $(event.currentTarget).parents('[data-item-id]').data();
+    const item = this.itemWithSpellsItem.itemSpellItemMap.get(itemId);
+
+    if (item.isOwned) {
+      return item.sheet.render(true);
+    }
+
     // pop up a formapp to configure this item's overrides
     return new ItemsWithSpells5eItemSpellOverrides(this.itemWithSpellsItem, itemId).render(true);
   }
@@ -169,6 +197,7 @@ export class ItemsWithSpells5eItemSheet {
     // Activate Listeners for this ui.
     spellsTabHtml.on('click', '.item-name', this._handleItemClick.bind(this));
     spellsTabHtml.on('click', '.item-delete', this._handleItemDeleteClick.bind(this));
+    spellsTabHtml.on('click', '.item-destroy', this._handleItemDestroyClick.bind(this));
     spellsTabHtml.on('click', '.configure-overrides', this._handleItemEditClick.bind(this));
 
     // Register a DragDrop handler for adding new spells to this item

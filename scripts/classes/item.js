@@ -8,7 +8,7 @@ import { ItemsWithSpells5eItemSheet } from './item-sheet.js';
  * @param {string} uuid - the `uuid` of the source of this item
  * @returns item with the correct flags to allow deletion
  */
-const FakeEmptySpell = (uuid) =>
+const FakeEmptySpell = (uuid, parent) =>
   new Item.implementation(
     {
       name: game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.MISSING_ITEM`),
@@ -21,7 +21,7 @@ const FakeEmptySpell = (uuid) =>
       },
       _id: uuid.split('.').pop(),
     },
-    { temporary: true },
+    { temporary: true, parent },
   );
 
 /**
@@ -88,7 +88,7 @@ export class ItemsWithSpells5eItem {
 
     // return a fake 'empty' item if we could not create a childItem
     if (!original) {
-      original = FakeEmptySpell(uuid);
+      original = FakeEmptySpell(uuid, this.item.parent);
     }
 
     // this exists if the 'child' spell has been created on an actor
@@ -113,7 +113,11 @@ export class ItemsWithSpells5eItem {
       });
     }
 
-    const childItem = new Item.implementation(original.toObject(), { temporary: true, keepId: false });
+    const childItem = new Item.implementation(original.toObject(), {
+      temporary: true,
+      keepId: false,
+      parent: this.item.parent,
+    });
     await childItem.updateSource(update);
 
     ItemsWithSpells5e.log(false, 'getChildItem', childItem);
@@ -218,26 +222,56 @@ export class ItemsWithSpells5eItem {
   }
 
   /**
-   * Removes an item from this item's spells
+   * Removes the relationship between the provided item and this item's spells
    * @param {string} itemId - the id of the item to remove
+   * @param {Object} options
+   * @param {boolean} [options.alsoDeleteEmbeddedSpell] - Should the spell be deleted also, only for owned items
    */
-  async removeSpellFromItem(itemId) {
-    if (this.item.isOwned) {
-      ui.notifications.error('Not supported');
-      return;
-    }
-
+  async removeSpellFromItem(itemId, { alsoDeleteEmbeddedSpell } = {}) {
     const itemToDelete = this.itemSpellItemMap.get(itemId);
 
-    const sourceUuid = itemToDelete.getFlag('core', 'sourceId');
+    let uuidToRemove; // spell item's uuid this item stores for its relationship
 
-    const newItemSpells = this.itemSpellList.filter(({ uuid }) => uuid !== sourceUuid);
+    if (this.item.isOwned) {
+      // in this case we are storing the actual owned spell item's UUID
+      uuidToRemove = itemToDelete.uuid;
+    } else {
+      // in the un-owned case, we store the sourceId
+      uuidToRemove = itemToDelete.getFlag('core', 'sourceId');
+    }
+
+    const newItemSpells = this.itemSpellList.filter(({ uuid }) => uuid !== uuidToRemove);
 
     // update the data manager's internal store of the items it contains
     this._itemSpellItems?.delete(itemId);
     this._itemSpellFlagMap?.delete(itemId);
 
     await this.item.setFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells, newItemSpells);
+
+    if (!this.item.isOwned) {
+      return;
+    }
+
+    // remove the spell's `parentItem` flag
+    const spellItem = fromUuidSync(uuidToRemove);
+
+    // the other item has already been deleted probably, do nothing
+    if (!spellItem) {
+      return;
+    }
+
+    let shouldDeleteSpell =
+      alsoDeleteEmbeddedSpell &&
+      (await Dialog.confirm({
+        title: game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.MODULE_NAME`),
+        content: game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.WARN_ALSO_DELETE`),
+      }));
+
+    if (shouldDeleteSpell) {
+      await spellItem.delete();
+    } else {
+      await spellItem.unsetFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.parentItem);
+    }
   }
 
   /**

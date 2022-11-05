@@ -70,8 +70,8 @@ export class ItemsWithSpells5eActor {
     const alsoDeleteChildSpells =
       options?.itemsWithSpells5e?.alsoDeleteChildSpells ??
       (await Dialog.confirm({
-        title: 'Items with Spells',
-        content: 'Would you also like to delete the spells from that item?',
+        title: game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.MODULE_NAME`),
+        content: game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.QUERY_ALSO_DELETE`),
       }));
 
     if (alsoDeleteChildSpells) {
