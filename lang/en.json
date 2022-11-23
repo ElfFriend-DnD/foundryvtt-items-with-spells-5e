@@ -11,6 +11,10 @@
     "MISSING_ITEM": "Missing Item",
     "MISSING_ITEM_DESCRIPTION": "This Spell's original item could not be found. Maybe it was deleted?",
     "WARN_ALSO_DELETE": "This will also delete the Spell from the Actor. Are you certain you want to delete the embedded spell?",
-    "QUERY_ALSO_DELETE": "Would you also like to delete the spells from that item?"
+    "QUERY_ALSO_DELETE": "Would you also like to delete the spells from that item?",
+    "SETTINGS": {
+      "ITEM_EXCLUSION.NAME": "Exclude More Item Types",
+      "ITEM_EXCLUSION.HINT": "Remove the spells tab from classes, subclasses, backgrounds, and feature type items, not just spell type items."
+    }
   }
 }
