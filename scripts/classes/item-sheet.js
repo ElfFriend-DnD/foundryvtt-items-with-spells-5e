@@ -2,7 +2,6 @@
 import { ItemsWithSpells5e } from '../items-with-spells-5e.js';
 import { ItemsWithSpells5eItemSpellOverrides } from './item-spell-overrides.js';
 import { ItemsWithSpells5eItem } from './item.js';
-import { EXTRA_EXCLUDED_TYPES } from './settings.mjs';
 
 /**
  * A class made to make managing the operations for an Item sheet easier.
@@ -26,11 +25,11 @@ export class ItemsWithSpells5eItemSheet {
    */
   static init() {
     Hooks.on('renderItemSheet', (app, html) => {
-      if (app.item.type === 'spell') {
-        return;
-      }
-      const exclude = game.settings.get("items-with-spells-5e", "itemTypeExclusion");
-      if(exclude && EXTRA_EXCLUDED_TYPES.includes(app.item.type)) return;
+      let include = false;
+      try{
+        include = !!game.settings.get("items-with-spells-5e", `includeItemType${app.item.type.titleCase()}`);
+      }catch{}
+      if(!include) return;
 
       ItemsWithSpells5e.log(false, {
         instances: this.instances,
