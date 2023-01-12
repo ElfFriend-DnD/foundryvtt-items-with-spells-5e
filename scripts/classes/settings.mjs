@@ -37,7 +37,7 @@ class IWS_TypeSettings extends FormApplication {
   }
 
   get title(){
-    return "Item Type Exclusion Menu";
+    return game.i18n.localize("items-with-spells-5e.SETTINGS.ITEM_EXCLUSION.TITLE");
   }
 
   get template(){
