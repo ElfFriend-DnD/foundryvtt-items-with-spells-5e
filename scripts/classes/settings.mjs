@@ -1,3 +1,5 @@
+import { ItemsWithSpells5e } from "../items-with-spells-5e";
+
 export const EXCLUDED_TYPES = [
   "class",
   "subclass",
@@ -10,8 +12,8 @@ export const EXCLUDED_TYPES = [
 export function _registerSettings() {
   const TYPES = Item.TYPES.filter(t => !EXCLUDED_TYPES.includes(t));
 
-  for(const type of TYPES){
-    game.settings.register("items-with-spells-5e", `includeItemType${type.titleCase()}`, {
+  for (const type of TYPES) {
+    game.settings.register(ItemsWithSpells5e.MODULE_ID, `includeItemType${type.titleCase()}`, {
       scope: "world",
       config: false,
       type: Boolean,
@@ -20,39 +22,39 @@ export function _registerSettings() {
     });
   }
 
-  game.settings.registerMenu("items-with-spells-5e", "itemTypeExclusion", {
-    name: "items-with-spells-5e.SETTINGS.ITEM_EXCLUSION.NAME",
-    hint: "items-with-spells-5e.SETTINGS.ITEM_EXCLUSION.HINT",
+  game.settings.registerMenu(ItemsWithSpells5e.MODULE_ID, "itemTypeExclusion", {
+    name: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.NAME`,
+    hint: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.HINT`,
     scope: "world",
     config: true,
     type: IWS_TypeSettings,
-    label: "items-with-spells-5e.SETTINGS.ITEM_EXCLUSION.NAME"
+    label: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.NAME`
   });
 }
 
 class IWS_TypeSettings extends FormApplication {
 
-  get id(){
-    return "items-with-spells-5e-itemTypeExclusion-menu";
+  get id() {
+    return `${ItemsWithSpells5e.MODULE_ID}-item-type-exclusion-menu`;
   }
 
-  get title(){
-    return game.i18n.localize("items-with-spells-5e.SETTINGS.ITEM_EXCLUSION.TITLE");
+  get title() {
+    return game.i18n.localize(`${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.TITLE`);
   }
 
-  get template(){
+  get template() {
     return "modules/items-with-spells-5e/templates/settingsMenu.hbs";
   }
 
-  async getData(){
+  async getData() {
     const TYPES = Item.TYPES.filter(t => !EXCLUDED_TYPES.includes(t));
     const data = await super.getData();
     data.types = [];
-    console.log({types: data.types, TYPES, data});
-    for(const type of TYPES){
+    console.log({ types: data.types, TYPES, data });
+    for (const type of TYPES) {
       const label = type.titleCase();
       data.types.push({
-        checked: game.settings.get("items-with-spells-5e", `includeItemType${label}`),
+        checked: game.settings.get(ItemsWithSpells5e.MODULE_ID, `includeItemType${label}`),
         value: type,
         label
       });
@@ -60,9 +62,9 @@ class IWS_TypeSettings extends FormApplication {
     return data;
   }
 
-  async _updateObject(event, formData){
+  async _updateObject(event, formData) {
     Object.entries(formData).forEach(([type, bool]) => {
-      game.settings.set("items-with-spells-5e", `includeItemType${type.titleCase()}`, bool);
+      game.settings.set(ItemsWithSpells5e.MODULE_ID, `includeItemType${type.titleCase()}`, bool);
     });
   }
 }

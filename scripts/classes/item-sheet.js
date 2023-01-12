@@ -26,10 +26,10 @@ export class ItemsWithSpells5eItemSheet {
   static init() {
     Hooks.on('renderItemSheet', (app, html) => {
       let include = false;
-      try{
+      try {
         include = !!game.settings.get("items-with-spells-5e", `includeItemType${app.item.type.titleCase()}`);
-      }catch{}
-      if(!include) return;
+      } catch {}
+      if (!include) return;
 
       ItemsWithSpells5e.log(false, {
         instances: this.instances,
