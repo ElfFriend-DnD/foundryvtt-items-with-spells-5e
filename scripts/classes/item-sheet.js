@@ -27,7 +27,7 @@ export class ItemsWithSpells5eItemSheet {
     Hooks.on('renderItemSheet', (app, html) => {
       let include = false;
       try {
-        include = !!game.settings.get("items-with-spells-5e", `includeItemType${app.item.type.titleCase()}`);
+        include = !!game.settings.get(ItemsWithSpells5e.MODULE_ID, `includeItemType${app.item.type.titleCase()}`);
       } catch {}
       if (!include) return;
 
@@ -169,7 +169,7 @@ export class ItemsWithSpells5eItemSheet {
     ItemsWithSpells5e.log(false, 'RENDERING');
     // Update the nav menu
     const spellsTabButton = $(
-      '<a class="item" data-tab="spells">' + game.i18n.localize(`DND5E.ItemTypeSpellPl`) + '</a>',
+      '<a class="item" data-tab="spells">' + game.i18n.localize(`ITEM.TypeSpellPl`) + '</a>',
     );
     const tabs = this.sheetHtml.find('.tabs[data-group="primary"]');
 

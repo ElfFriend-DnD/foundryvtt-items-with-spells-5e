@@ -61,9 +61,14 @@ export class ItemsWithSpells5eActorSheet {
       foundry.utils.getProperty(spell, `flags.${ItemsWithSpells5e.MODULE_ID}.${ItemsWithSpells5e.FLAGS.parentItem}`),
     );
 
-    const itemsWithSpells = this.actor.items.filter(
-      (item) => item.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length,
-    );
+    const itemsWithSpells = this.actor.items.filter(item => {
+      const fl = item.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length;
+      let include = false;
+      try {
+        include = !!game.settings.get(ItemsWithSpells5e.MODULE_ID, `includeItemType${item.type.titleCase()}`);
+      } catch {}
+      return fl && include;
+    });
 
     // create a new spellbook section for each item with spells attached
     itemsWithSpells.forEach((itemWithSpells) => {

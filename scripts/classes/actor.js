@@ -118,6 +118,13 @@ export class ItemsWithSpells5eActor {
       return;
     }
 
+    // bail out from creating the spells if the parent item is not valid.
+    let include = false;
+    try {
+      include = !!game.settings.get(ItemsWithSpells5e.MODULE_ID, `includeItemType${itemCreated.type.titleCase()}`);
+    } catch {}
+    if (!include) return;
+
     ItemsWithSpells5e.log(false, 'handleCreateItem', itemCreated);
 
     if (!itemCreated.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length) {

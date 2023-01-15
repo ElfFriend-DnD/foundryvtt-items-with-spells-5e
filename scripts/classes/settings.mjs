@@ -1,4 +1,5 @@
-import { ItemsWithSpells5e } from "../items-with-spells-5e";
+import { ItemsWithSpells5e } from "../items-with-spells-5e.js";
+
 
 export const EXCLUDED_TYPES = [
   "class",
