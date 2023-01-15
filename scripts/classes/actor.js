@@ -61,6 +61,9 @@ export class ItemsWithSpells5eActor {
       return;
     }
 
+    // do nothing if the item was deleted off a vehicle or group type actor
+    if(["group", "vehicle"].includes(itemDeleted.parent?.type)) return;
+
     if (!itemDeleted.getFlag(ItemsWithSpells5e.MODULE_ID, ItemsWithSpells5e.FLAGS.itemSpells)?.length) {
       return;
     }
@@ -117,6 +120,9 @@ export class ItemsWithSpells5eActor {
     if (!itemCreated.parent || !(itemCreated.parent instanceof Actor)) {
       return;
     }
+
+    // do nothing if the item was created on a vehicle or group type actor
+    if(["group", "vehicle"].includes(itemCreated.parent?.type)) return;
 
     // bail out from creating the spells if the parent item is not valid.
     let include = false;
