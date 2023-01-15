@@ -1,6 +1,6 @@
 import { ItemsWithSpells5e } from "../items-with-spells-5e.js";
 
-
+// the item types that can NEVER have spells in them.
 export const EXCLUDED_TYPES = [
   "class",
   "subclass",
