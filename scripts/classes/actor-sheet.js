@@ -43,8 +43,10 @@ export class ItemsWithSpells5eActorSheet {
 
     ItemsWithSpells5e.log(false, 'preparing spells', { spells, data, spellbook });
 
+    const order = game.settings.get(ItemsWithSpells5e.MODULE_ID, "sortOrder") ? 20 : -5;
+
     const createItemSection = (itemName, value, max) => ({
-      order: -5,
+      order: order,
       label: itemName,
       usesSlots: false,
       canCreate: false,

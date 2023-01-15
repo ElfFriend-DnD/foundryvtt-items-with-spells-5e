@@ -23,6 +23,16 @@ export function _registerSettings() {
     });
   }
 
+  game.settings.register(ItemsWithSpells5e.MODULE_ID, "sortOrder", {
+    name: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.SORT_ORDER.NAME`,
+    hint: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.SORT_ORDER.HINT`,
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+    requiresReload: false
+  });
+
   game.settings.registerMenu(ItemsWithSpells5e.MODULE_ID, "itemTypeExclusion", {
     name: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.NAME`,
     hint: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.HINT`,

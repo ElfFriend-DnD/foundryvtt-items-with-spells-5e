@@ -14,6 +14,8 @@
     "QUERY_ALSO_DELETE": "Would you also like to delete the spells from that item?",
     "SETTINGS.ITEM_EXCLUSION.NAME": "Select Item Types",
     "SETTINGS.ITEM_EXCLUSION.HINT": "Select which item types can have spells attached.",
-    "SETTINGS.ITEM_EXCLUSION.TITLE": "Item Type Exclusion Menu"
+    "SETTINGS.ITEM_EXCLUSION.TITLE": "Item Type Exclusion Menu",
+    "SETTINGS.SORT_ORDER.NAME": "Spellbook Sort Order",
+    "SETTINGS.SORT_ORDER.HINT": "If checked, spellbook sections added by this module will be put at the bottom of the spellbook tab, rather than the top."
   }
 }
