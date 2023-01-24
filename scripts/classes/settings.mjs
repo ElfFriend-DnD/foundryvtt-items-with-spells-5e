@@ -39,7 +39,8 @@ export function _registerSettings() {
     scope: "world",
     config: true,
     type: IWS_TypeSettings,
-    label: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.NAME`
+    label: `${ItemsWithSpells5e.MODULE_ID}.SETTINGS.ITEM_EXCLUSION.NAME`,
+    restricted: true
   });
 }
 
@@ -61,7 +62,6 @@ class IWS_TypeSettings extends FormApplication {
     const TYPES = Item.TYPES.filter(t => !EXCLUDED_TYPES.includes(t));
     const data = await super.getData();
     data.types = [];
-    console.log({ types: data.types, TYPES, data });
     for (const type of TYPES) {
       const label = type.titleCase();
       data.types.push({
