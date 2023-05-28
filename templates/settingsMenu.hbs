@@ -1,10 +1,10 @@
 <form>
   <p class="note">{{localize "items-with-spells-5e.SETTINGS.ITEM_EXCLUSION.HINT"}}</p>
-  {{#each types as |type|}}
+  {{#each types}}
   <div class="form-group">
-    <label for="items-with-spells-setting-{{type.value}}">{{type.label}}</label>
+    <label for="items-with-spells-setting-{{value}}">{{label}}</label>
     <div class="form-fields">
-      <input type="checkbox" name="{{type.value}}" id="items-with-spells-setting-{{type.value}}" {{checked type.checked}}>
+      <input type="checkbox" name="{{value}}" id="items-with-spells-setting-{{value}}" {{checked checked}}>
     </div>
   </div>
   {{/each}}
