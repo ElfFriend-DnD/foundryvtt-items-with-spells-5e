@@ -77,7 +77,7 @@
           {{#select save.ability}}
           <option value=""></option>
           {{#each config.abilities as |ability a|}}
-          <option value="{{a}}">{{ability}}</option>
+          <option value="{{a}}">{{ability.label}}</option>
           {{/each}}
           {{/select}}
         </select>
@@ -91,7 +91,7 @@
           {{#select overrides.system.save.scaling}}
           <option value="spell">{{ localize "DND5E.Spellcasting" }}</option>
           {{#each config.abilities as |ability a|}}
-          <option value="{{a}}">{{ability}}</option>
+          <option value="{{a}}">{{ability.label}}</option>
           {{/each}}
           <option value="flat">{{ localize "DND5E.Flat" }}</option>
           {{/select}}

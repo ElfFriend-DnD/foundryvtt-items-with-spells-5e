@@ -86,6 +86,7 @@ export class ItemsWithSpells5eItemSheet {
    * @returns Promise that resolves when the item has been modified
    */
   async _dragEnd(event) {
+    if(!this.app.isEditable || this.item.isOwned) return;
     ItemsWithSpells5e.log(false, 'dragEnd', { event });
     const data = TextEditor.getDragEventData(event);
 
@@ -203,13 +204,12 @@ export class ItemsWithSpells5eItemSheet {
     spellsTabHtml.on('click', '.configure-overrides', this._handleItemEditClick.bind(this));
 
     // Register a DragDrop handler for adding new spells to this item
-    const dragDrop = new DragDrop({
+    const dragDrop = {
       dragSelector: '.item',
       dropSelector: '.items-with-spells-tab',
       permissions: { drop: () => this.app.isEditable && !this.item.isOwned },
-      callbacks: { drop: this._dragEnd.bind(this) },
-    });
-
-    dragDrop.bind(this.sheetHtml[0]);
+      callbacks: { drop: this._dragEnd },
+    };
+    this.app.element[0].querySelector(dragDrop.dropSelector).addEventListener("drop", dragDrop.callbacks.drop.bind(this));
   }
 }
